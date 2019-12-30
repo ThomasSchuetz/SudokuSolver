@@ -99,11 +99,7 @@ class SudokuSolver(object):
     def retrieve_results(self):
         result = []
         for row in self.rows:
-            current_row = []
-            for col in self.cols:
-                for candidate in self.candidates:
-                    if self.numbers[row, col, candidate].SolutionValue() == 1:
-                        current_row.append(candidate)
-            result.append(current_row)
+            result.append([candidate for col in self.cols for candidate in self.candidates 
+                           if self.numbers[row, col, candidate].SolutionValue() == 1])
         
         return result
