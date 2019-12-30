@@ -1,0 +1,11 @@
+h1	
+{
+	color: red;
+	margin-left: 2em;
+}
+
+input.number_input
+{
+	width: 20px;
+	height: 20px;
+}
