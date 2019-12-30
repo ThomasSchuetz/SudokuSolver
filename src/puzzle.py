@@ -11,6 +11,7 @@ class Puzzle(object):
     def solve(self):
         sudoku_solver = SudokuSolver(self._puzzle)
         self._puzzle = sudoku_solver.retrieve_results()
+        return self._puzzle
 
     def display_puzzle(self):
         for i, row in enumerate(self._puzzle):

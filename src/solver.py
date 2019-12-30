@@ -36,8 +36,6 @@ class SudokuSolver(object):
     
     
     def _add_constraints(self, puzzle):
-        self.opt_sum = self.model.Sum
-        
         self._every_field_has_one_number()
         self._fix_already_given_fields(puzzle)
         self._no_duplicates_per_row()
@@ -46,10 +44,6 @@ class SudokuSolver(object):
     
     
     def _solve_model(self):
-        model_export = self.model.ExportModelAsLpFormat(False)
-        with open("model.lp", "w") as fout:
-            fout.write(model_export)
-        self.model.EnableOutput()
         status = self.model.Solve()
         assert status in (pywraplp.Solver.OPTIMAL, pywraplp.Solver.FEASIBLE), "Optimization failed"
         
@@ -57,7 +51,7 @@ class SudokuSolver(object):
     def _every_field_has_one_number(self):
         for row in self.rows:
             for col in self.cols:
-                self.model.Add(self.opt_sum([self.numbers[row, col, candidate] for candidate in self.candidates]) == 1,
+                self.model.Add(self.model.Sum([self.numbers[row, col, candidate] for candidate in self.candidates]) == 1,
                                "every_field_has_one_number_" + str(row) + "_" + str(col))
     
     
@@ -73,32 +67,33 @@ class SudokuSolver(object):
     def _no_duplicates_per_row(self):
         for row in self.rows:
             for candidate in self.candidates:
-                self.model.Add(self.opt_sum([self.numbers[row, col, candidate] for col in self.cols]) == 1,
-                               "no_duplicates_per_row_" + str(row) + "_" + str(candidate))
+                selection = [self.numbers[row, col, candidate] for col in self.cols]
+                self._no_duplicates_in_selection(selection, "row_" + str(row) + "_" + str(candidate))
     
     
     def _no_duplicates_per_column(self):
         for col in self.cols:
             for candidate in self.candidates:
-                self.model.Add(self.opt_sum([self.numbers[row, col, candidate] for row in self.rows]) == 1,
-                               "no_duplicates_per_col_" + str(col) + "_" + str(candidate))
+                selection = [self.numbers[row, col, candidate] for row in self.rows]
+                self._no_duplicates_in_selection(selection, "col_" + str(col) + "_" + str(candidate))
     
     
     def _no_duplicates_per_subfield(self):
         for candidate in self.candidates:        
             for horizontal in range(self.subfield["number_horizontal"]):
                 for vertical in range(self.subfield["number_vertical"]):
-                    label = "no_duplicates_per_subfield_" + str(horizontal) + "_" + str(vertical) + "_" + str(candidate)
-                    self.model.Add(self.opt_sum([self.numbers[self.subfield["number_horizontal"] * horizontal + i, 
-                                                              self.subfield["number_vertical"] * vertical + j,
-                                                              candidate]
-                                                 for i in range(self.subfield["amount_horizontal"])
-                                                 for j in range(self.subfield["amount_vertical"])]) == 1,
-                                   label)
+                    label = "subfield_" + str(horizontal) + "_" + str(vertical) + "_" + str(candidate)
+                    selection = [self.numbers[self.subfield["number_horizontal"] * horizontal + i, 
+                                              self.subfield["number_vertical"] * vertical + j,
+                                              candidate]
+                                 for i in range(self.subfield["amount_horizontal"])
+                                 for j in range(self.subfield["amount_vertical"])]
+                    self._no_duplicates_in_selection(selection, label)
 
     
-    def _no_duplicates_in_selection(self, selection):
-        pass
+    def _no_duplicates_in_selection(self, selection, label):
+        self.model.Add(self.model.Sum([element for element in selection]) == 1,
+                       "no_duplicates_per_" + label)
 
 
     def retrieve_results(self):
@@ -112,18 +107,3 @@ class SudokuSolver(object):
             result.append(current_row)
         
         return result
-    
-    
-if __name__ == "__main__":
-    puzzle = [[5,6,3, 0,0,0, 0,7,0],
-          [0,0,7, 4,1,6, 0,0,0],
-          [0,0,0, 0,0,0, 8,2,6],
-          [0,0,0, 0,0,0, 0,9,7],
-          [0,7,0, 3,6,8, 0,4,1],
-          [2,0,1, 0,0,5, 0,3,0],
-          [7,0,0, 6,5,1, 0,0,0],
-          [0,0,0, 0,0,0, 7,0,9],
-          [1,3,2, 8,0,0, 0,0,0]]
-    
-    sudoku = SudokuSolver(puzzle)
-    result = sudoku.retrieve_results()
