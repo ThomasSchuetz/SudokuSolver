@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Sudoku solver</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+		
+		<link rel="icon" type="image/gif/png" href="{{ url_for('static', filename='graphics/icon.png') }}">
+	</head>
+
+	<body>
+		<h1>Sudoku solver</h1>
+		
+		{% for row in range(9)%}
+
+			{% if row % 3 == 0 %} ------------------------- <br> {% endif %}
+
+			{% for col in range(9)%}
+				{% if col % 3 == 0 %} | {% endif %}
+				{{ solution[row][col] }}
+			{% endfor %}
+
+			|
+
+			<br>
+
+		{% endfor %}
+
+		-------------------------
+
+		<br>
+		<a href="/">Back to start</a>
+	</body>
+</html>
