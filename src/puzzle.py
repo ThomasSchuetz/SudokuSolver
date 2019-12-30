@@ -56,15 +56,13 @@ class Puzzle(object):
     
     def _check_double_entries_horizontal(self):
         for i, row in enumerate(self._puzzle):
-            check_row = self._remove_negative_values_for_check(row)
-            assert not self._contains_duplicates(check_row), "Row " + str(i+1) + " contains duplicates"
+            assert not self._contains_duplicates(row), "Row " + str(i+1) + " contains duplicates"
     
     
     def _check_double_entries_vertical(self):
         for i in range(len(self._puzzle)):
             col = [row[i] for row in self._puzzle]
-            check_col = self._remove_negative_values_for_check(col)
-            assert not self._contains_duplicates(check_col), "Column " + str(i+1) + " contains duplicates"
+            assert not self._contains_duplicates(col), "Column " + str(i+1) + " contains duplicates"
     
     
     def _check_double_entries_subfield(self):
@@ -74,16 +72,17 @@ class Puzzle(object):
                 for i in range(3):
                     for j in range(3):
                         values.append(self._puzzle[3 * horizontal + i][3 * vertical + j])
-                check_values = self._remove_negative_values_for_check(values)
                 message = "Subfield (" + str(horizontal+1) + "," + str(vertical+1) + ") contains duplicates"
-                assert not self._contains_duplicates(check_values), message      
+                assert not self._contains_duplicates(values), message      
     
     
     def _contains_duplicates(self, elements):
-        if len(elements) == len(set(elements)):
+        check_elements = self._remove_negative_values_for_check(elements)
+        if len(check_elements) == len(set(check_elements)):
             return False
         else:
             return True
+    
     
     def _remove_negative_values_for_check(self, values):
         return [value for value in values if value > 0]
