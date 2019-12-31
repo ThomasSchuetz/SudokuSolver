@@ -35,12 +35,21 @@ td
 }
 
 input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+input::-webkit-inner-spin-button 
+{
     /* display: none; <- Crashes Chrome on hover */
     -webkit-appearance: none;
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
-input[type=number] {
+input[type=number] 
+{
     -moz-appearance:textfield; /* Firefox */
+}
+
+.error_msg
+{
+	padding: 1em;
+	color: red;
+	font-size: xx-large;
 }

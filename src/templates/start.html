@@ -21,7 +21,7 @@
 					{% for row in range(3) %}
 						<tr>
 							{% for col in range(9) %}
-								<td><input class="number_input" type="text" maxlength="1" name="field_{{row}}_{{col}}" onchange="adjust_style(this);"/></td>
+								<td><input class="number_input" type="text" maxlength="1" name="field_{{row}}_{{col}}" onchange="adjust_style(this);check_inputs('error_msg');"/></td>
 							{% endfor %}
 						</tr>
 					{% endfor %}
@@ -30,7 +30,7 @@
 					{% for row in range(3,6) %}
 						<tr>
 							{% for col in range(9) %}
-								<td><input class="number_input" type="text" maxlength="1" name="field_{{row}}_{{col}}" onchange="adjust_style(this);"/></td>
+								<td><input class="number_input" type="text" maxlength="1" name="field_{{row}}_{{col}}" onchange="adjust_style(this);check_inputs('error_msg');"/></td>
 							{% endfor %}
 						</tr>
 					{% endfor %}
@@ -39,7 +39,7 @@
 					{% for row in range(6,9) %}
 						<tr>
 							{% for col in range(9) %}
-								<td><input class="number_input" type="text" maxlength="1" name="field_{{row}}_{{col}}" onchange="adjust_style(this);"/></td>
+								<td><input class="number_input" type="text" maxlength="1" name="field_{{row}}_{{col}}" onchange="adjust_style(this);check_inputs('error_msg');"/></td>
 							{% endfor %}
 						</tr>
 					{% endfor %}
@@ -47,8 +47,13 @@
 			</table>
 
 			<br>
-			<button>Solve Sudoku</button>
+			<button id="btn_solve" onclick="fill_zeros_if_empty();">Solve Sudoku</button>
 		</form>
+
+		<div class="error_msg" style="display: none;">
+			There are some errors!
+		</div>
+
 
 		<script>
 			window.onload = function () {
