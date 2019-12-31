@@ -51,7 +51,7 @@ function contains_double_entries_horizontal()
         {
             add_to_field_if_not_empty(entries, document.getElementsByName("field_"+row+"_"+col)[0].value);
         }
-        result += add_error_message(enrtries, "Duplicates in row " + (row+1) + "<br>");
+        result += add_error_message(entries, "Duplicates in row " + (row+1) + "<br>");
     }
     return result;
 }
@@ -68,7 +68,7 @@ function contains_double_entries_vertical()
         {
             add_to_field_if_not_empty(entries, document.getElementsByName("field_"+row+"_"+col)[0].value);
         }
-        result += add_error_message(enrtries, "Duplicates in column " + (col+1) + "<br>");
+        result += add_error_message(entries, "Duplicates in column " + (col+1) + "<br>");
     }
     return result;
 }
@@ -89,7 +89,7 @@ function contains_double_entries_subfield()
                     add_to_field_if_not_empty(entries, document.getElementsByName("field_"+(3*grid_row+row)+"_"+(3*grid_col+col))[0].value);
                 }
             }
-            result += add_error_message(enrtries, "Duplicates in subfield (" + (grid_row+1) + ", " + (grid_col+1) + ")" + "<br>");
+            result += add_error_message(entries, "Duplicates in subfield (" + (grid_row+1) + ", " + (grid_col+1) + ")" + "<br>");
         }
     }
     return result;
