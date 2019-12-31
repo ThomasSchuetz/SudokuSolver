@@ -17,12 +17,12 @@ function fill_zeros_if_empty()
 
 function check_inputs(div_error_message)
 {
-    field_error_message = document.getElementsByClassName(div_error_message)[0];
-    solve_button = document.getElementById("btn_solve");
+    var field_error_message = document.getElementsByClassName(div_error_message)[0];
+    var solve_button = document.getElementById("btn_solve");
 
-    error_message = "<b>Before submitting the problem, please fix these errors:</b><br>"
+    var error_message = "<b>Before submitting the problem, please fix these errors:</b><br>"
 
-    messages = "";
+    var messages = "";
     messages += contains_double_entries_horizontal();
     messages += contains_double_entries_vertical();
     messages += contains_double_entries_subfield();
@@ -42,7 +42,7 @@ function check_inputs(div_error_message)
 
 function contains_double_entries_horizontal()
 {
-    result = "";
+    var result = "";
 
     for (let row = 0; row < 9; row++) 
     {
@@ -59,7 +59,7 @@ function contains_double_entries_horizontal()
 
 function contains_double_entries_vertical()
 {
-    result = "";
+    var result = "";
 
     for (let col = 0; col < 9; col++)
     {
@@ -75,13 +75,13 @@ function contains_double_entries_vertical()
 
 function contains_double_entries_subfield()
 {
-    result = "";
+    var result = "";
 
     for (let grid_row = 0; grid_row < 3; grid_row++) 
     {
         for (let grid_col = 0; grid_col < 3; grid_col++)
         {
-            entries = [];
+            var entries = [];
             for (let row = 0; row < 3; row++) 
             {
                 for (let col = 0; col < 3; col++) 
