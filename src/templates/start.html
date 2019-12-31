@@ -13,7 +13,7 @@
 		<h1>Sudoku solver</h1>
 	  
 		<form name="form" action="{{ url_for('solve') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
-			<table>
+			<table summary="Sudoku puzzle">
 				<colgroup><col><col><col></colgroup>
 				<colgroup><col><col><col></colgroup>
 				<colgroup><col><col><col></colgroup>
@@ -44,7 +44,7 @@
 						</tr>
 					{% endfor %}
 				</tbody>				
-			</table>
+			</table summary="Sudoku puzzle">
 
 			<br>
 			<button id="btn_solve" onclick="fill_zeros_if_empty();">Solve Sudoku</button>
