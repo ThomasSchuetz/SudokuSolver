@@ -12,4 +12,4 @@ addons:
 
 script:
   - py.test
-  - sonar-scanner
+  - sonar-scanner -X
