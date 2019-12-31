@@ -1,9 +1,16 @@
+dist: trusty
 language: python
 python:
-  - "3.7"
-
+- '3.7'
 install:
-  - pip install -r requirements.txt
+- pip install -r requirements.txt
+
+addons:
+  sonarcloud:
+    organization: "thomasschuetz"
+    token:
+      secure: ASQk/dT7UR4MjEqcHlS5aHCm2aFqeuXd7YB4edDwCtpVEIuWv9ldZeiAd9O3d/SC8XwTyv9te1RVgcrrtn8UfABxbQwmPJaUL/zsm0UyvN6q9CHHXPpGrTroZFVBudvmg7m2ID+Vq7OJGkwOpgXLFzzsazdkbHVQTqLqjTNeRetiqs9DPiUz7jS6xRNHYyUynwhqJAe6ijogFoC+sqyWS2hUeF03fzZeWjs9fVqEMalaDBg+vMDULP5nebv3ojiqy2NZr7joVAC/N98J3uCRzAaFyTxxY9gixnYzJ3ms+NI8uQeEobLF7rSwBdoI69gE2twQ+o3eMr5iIhUWe1flGKhJRAFJOvcia8Pv7lNaLyAbEbaA+rzAonNqJIQofegGMdNSkwpewvmwsylSvRqEbr9KD0EOoVwbNVlaHX8g4sknP+imifD01I4kXws9Xj7ORpOG1BUA36HfjHIHF3KZrz9gSeE5R4T9LiGpDd2TZ0G521ZOLXL8tfy6PvABOnm4ZJj6NyyKZBbFb0AmcvBAUsNsmqX+NUrbP+rnx1XWBqcSrJb+st0kZcvX0Hek5CqVR81DmfrdgLHHNic6kGDv3LdE7RvTtGCl6XwQrSKQskQD8FLZGtDsleAWkVhZZdOPuafb31E0+PiCI3G77LX38lcP9XjEjQ/B1CEm55CNUtA=
 
 script:
   - py.test
+  - sonar-scanner
