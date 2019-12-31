@@ -1,33 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<title>Sudoku solver</title>
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 		
 		<link rel="icon" type="image/gif/png" href="{{ url_for('static', filename='graphics/icon.png') }}">
+		<script type="text/javascript" src="{{ url_for('static', filename='scripts/fill_tables.js') }}"></script>
 	</head>
 
 	<body>
 		<h1>Sudoku solver</h1>
 		
-		{% for row in range(9)%}
-
-			{% if row % 3 == 0 %} ------------------------- <br> {% endif %}
-
-			{% for col in range(9)%}
-				{% if col % 3 == 0 %} | {% endif %}
-				{{ solution[row][col] }}
-			{% endfor %}
-
-			|
-
-			<br>
-
-		{% endfor %}
-
-		-------------------------
+		<table>
+			<colgroup><col><col><col></colgroup>
+			<colgroup><col><col><col></colgroup>
+			<colgroup><col><col><col></colgroup>
+			<tbody>
+				{% for row in range(3) %}
+					<tr>
+						{% for col in range(9) %}
+							<td><input class="number_input" type="text" readonly maxlength="1" name="field_{{row}}_{{col}}" value="{{ solution[row][col] }}"/></td>
+						{% endfor %}
+					</tr>
+				{% endfor %}
+			</tbody>
+			<tbody>
+				{% for row in range(3,6) %}
+					<tr>
+						{% for col in range(9) %}
+							<td><input class="number_input" type="text" readonly maxlength="1" name="field_{{row}}_{{col}}" value="{{ solution[row][col] }}"/></td>
+						{% endfor %}
+					</tr>
+				{% endfor %}
+			</tbody>
+			<tbody>
+				{% for row in range(6,9) %}
+					<tr>
+						{% for col in range(9) %}
+							<td><input class="number_input" type="text" readonly maxlength="1" name="field_{{row}}_{{col}}" value="{{ solution[row][col] }}"/></td>
+						{% endfor %}
+					</tr>
+				{% endfor %}
+			</tbody>				
+		</table>
 
 		<br>
-		<a href="/">Back to start</a>
+		<a href="/"><button>Back to start</button></a>
+
+		<script>
+			window.onload = function () {
+				update_background_colors({{ input_puzzle|tojson }}, "field_");
+			};
+		</script>
 	</body>
-</html>
+</html lang="en">

@@ -1,143 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<title>Sudoku solver</title>
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-		
 		<link rel="icon" type="image/gif/png" href="{{ url_for('static', filename='graphics/icon.png') }}">
+		<script type="text/javascript" src="{{ url_for('static', filename='scripts/fill_tables.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='scripts/check_inputs.js') }}"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	</head>
 
 	<body>
 		<h1>Sudoku solver</h1>
 	  
-		<form name="form" action="{{ url_for('solve') }}" method="POST" enctype="multipart/form-data">
-
-			<!-- {% for row in range(9)%}
-
-				{% if row % 3 == 0 %} <hr> {% endif %}
-
-				{% for col in range(9)%}
-					{% if col % 3 == 0 %} | {% endif %}
-					<input class="number_input" type="text" name="field_{{row}}_{{col}}" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" />
-				{% endfor %}
-
-				|
-
-				<br>
-
-			{% endfor %}
-
-			<hr> -->
-
-			<input class="number_input" type="text" name="field_0_0" value="5"/>
-			<input class="number_input" type="text" name="field_0_1" value="6"/>
-			<input class="number_input" type="text" name="field_0_2" value="3"/>
-			<input class="number_input" type="text" name="field_0_3" value="0"/>
-			<input class="number_input" type="text" name="field_0_4" value="0"/>
-			<input class="number_input" type="text" name="field_0_5" value="0"/>
-			<input class="number_input" type="text" name="field_0_6" value="0"/>
-			<input class="number_input" type="text" name="field_0_7" value="7"/>
-			<input class="number_input" type="text" name="field_0_8" value="0"/>
-
-			<br>
-			
-			<input class="number_input" type="text" name="field_1_0" value="0"/>
-			<input class="number_input" type="text" name="field_1_1" value="0"/>
-			<input class="number_input" type="text" name="field_1_2" value="7"/>
-			<input class="number_input" type="text" name="field_1_3" value="4"/>
-			<input class="number_input" type="text" name="field_1_4" value="1"/>
-			<input class="number_input" type="text" name="field_1_5" value="6"/>
-			<input class="number_input" type="text" name="field_1_6" value="0"/>
-			<input class="number_input" type="text" name="field_1_7" value="0"/>
-			<input class="number_input" type="text" name="field_1_8" value="0"/>
+		<form name="form" action="{{ url_for('solve') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
+			<table>
+				<colgroup><col><col><col></colgroup>
+				<colgroup><col><col><col></colgroup>
+				<colgroup><col><col><col></colgroup>
+				<tbody>
+					{% for row in range(3) %}
+						<tr>
+							{% for col in range(9) %}
+								<td><input class="number_input" type="text" maxlength="1" name="field_{{row}}_{{col}}" onchange="adjust_style(this);"/></td>
+							{% endfor %}
+						</tr>
+					{% endfor %}
+				</tbody>
+				<tbody>
+					{% for row in range(3,6) %}
+						<tr>
+							{% for col in range(9) %}
+								<td><input class="number_input" type="text" maxlength="1" name="field_{{row}}_{{col}}" onchange="adjust_style(this);"/></td>
+							{% endfor %}
+						</tr>
+					{% endfor %}
+				</tbody>
+				<tbody>
+					{% for row in range(6,9) %}
+						<tr>
+							{% for col in range(9) %}
+								<td><input class="number_input" type="text" maxlength="1" name="field_{{row}}_{{col}}" onchange="adjust_style(this);"/></td>
+							{% endfor %}
+						</tr>
+					{% endfor %}
+				</tbody>				
+			</table>
 
 			<br>
-
-			<input class="number_input" type="text" name="field_2_0" value="0"/>
-			<input class="number_input" type="text" name="field_2_1" value="0"/>
-			<input class="number_input" type="text" name="field_2_2" value="0"/>
-			<input class="number_input" type="text" name="field_2_3" value="0"/>
-			<input class="number_input" type="text" name="field_2_4" value="0"/>
-			<input class="number_input" type="text" name="field_2_5" value="0"/>
-			<input class="number_input" type="text" name="field_2_6" value="8"/>
-			<input class="number_input" type="text" name="field_2_7" value="2"/>
-			<input class="number_input" type="text" name="field_2_8" value="6"/>
-
-			<br>
-
-			<input class="number_input" type="text" name="field_3_0" value="0"/>
-			<input class="number_input" type="text" name="field_3_1" value="0"/>
-			<input class="number_input" type="text" name="field_3_2" value="0"/>
-			<input class="number_input" type="text" name="field_3_3" value="0"/>
-			<input class="number_input" type="text" name="field_3_4" value="0"/>
-			<input class="number_input" type="text" name="field_3_5" value="0"/>
-			<input class="number_input" type="text" name="field_3_6" value="0"/>
-			<input class="number_input" type="text" name="field_3_7" value="9"/>
-			<input class="number_input" type="text" name="field_3_8" value="7"/>
-
-			<br>
-
-			<input class="number_input" type="text" name="field_4_0" value="0"/>
-			<input class="number_input" type="text" name="field_4_1" value="7"/>
-			<input class="number_input" type="text" name="field_4_2" value="0"/>
-			<input class="number_input" type="text" name="field_4_3" value="3"/>
-			<input class="number_input" type="text" name="field_4_4" value="6"/>
-			<input class="number_input" type="text" name="field_4_5" value="8"/>
-			<input class="number_input" type="text" name="field_4_6" value="0"/>
-			<input class="number_input" type="text" name="field_4_7" value="4"/>
-			<input class="number_input" type="text" name="field_4_8" value="1"/>
-
-			<br>
-
-			<input class="number_input" type="text" name="field_5_0" value="2"/>
-			<input class="number_input" type="text" name="field_5_1" value="0"/>
-			<input class="number_input" type="text" name="field_5_2" value="1"/>
-			<input class="number_input" type="text" name="field_5_3" value="0"/>
-			<input class="number_input" type="text" name="field_5_4" value="0"/>
-			<input class="number_input" type="text" name="field_5_5" value="5"/>
-			<input class="number_input" type="text" name="field_5_6" value="0"/>
-			<input class="number_input" type="text" name="field_5_7" value="3"/>
-			<input class="number_input" type="text" name="field_5_8" value="0"/>
-
-			<br>
-
-			<input class="number_input" type="text" name="field_6_0" value="7"/>
-			<input class="number_input" type="text" name="field_6_1" value="0"/>
-			<input class="number_input" type="text" name="field_6_2" value="0"/>
-			<input class="number_input" type="text" name="field_6_3" value="6"/>
-			<input class="number_input" type="text" name="field_6_4" value="5"/>
-			<input class="number_input" type="text" name="field_6_5" value="1"/>
-			<input class="number_input" type="text" name="field_6_6" value="0"/>
-			<input class="number_input" type="text" name="field_6_7" value="0"/>
-			<input class="number_input" type="text" name="field_6_8" value="0"/>
-
-			<br>
-
-			<input class="number_input" type="text" name="field_7_0" value="0"/>
-			<input class="number_input" type="text" name="field_7_1" value="0"/>
-			<input class="number_input" type="text" name="field_7_2" value="0"/>
-			<input class="number_input" type="text" name="field_7_3" value="0"/>
-			<input class="number_input" type="text" name="field_7_4" value="0"/>
-			<input class="number_input" type="text" name="field_7_5" value="0"/>
-			<input class="number_input" type="text" name="field_7_6" value="7"/>
-			<input class="number_input" type="text" name="field_7_7" value="0"/>
-			<input class="number_input" type="text" name="field_7_8" value="9"/>
-
-			<br>
-
-			<input class="number_input" type="text" name="field_8_0" value="1"/>
-			<input class="number_input" type="text" name="field_8_1" value="3"/>
-			<input class="number_input" type="text" name="field_8_2" value="2"/>
-			<input class="number_input" type="text" name="field_8_3" value="8"/>
-			<input class="number_input" type="text" name="field_8_4" value="0"/>
-			<input class="number_input" type="text" name="field_8_5" value="0"/>
-			<input class="number_input" type="text" name="field_8_6" value="0"/>
-			<input class="number_input" type="text" name="field_8_7" value="0"/>
-			<input class="number_input" type="text" name="field_8_8" value="0"/>
-
-			<br>
-
 			<button>Solve Sudoku</button>
 		</form>
+
+		<script>
+			window.onload = function () {
+				initialize_puzzle("field_");
+			};
+
+			$(".number_input").focusin(function()
+			{
+				$(this).select();
+				this.style.color = "black";
+			});
+			$(".number_input").focusout(function()
+			{
+				adjust_style(this);
+			});
+			$(".number_input").keypress(function(key)
+			{
+				if(key.charCode < 48 || key.charCode > 57) return false;
+			});
+		</script>
 	</body>
 </html>
