@@ -13,5 +13,5 @@ addons:
       secure: $SONARCUBE
 
 script:
-  - py.test
+  - pytest --cov-report xml --cov=src
   - sonar-scanner -X
