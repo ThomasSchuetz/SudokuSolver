@@ -1,4 +1,4 @@
 ortools>=7
-flask==1.1.1
+flask==2.3.2
 pytest>=4.0.2
 pytest-cov
